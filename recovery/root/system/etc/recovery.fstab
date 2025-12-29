@@ -11,9 +11,7 @@ system              /system            ext4  ro        wait,,avb=vbmeta,logical,
 vendor              /vendor            ext4  ro        wait,,avb,logical,first_stage_mount,async_discard
 oppo_product        /oppo_product      ext4  ro        wait,logical,first_stage_mount
 oppo_engineering    /oppo_engineering  ext4  ro        wait,logical,first_stage_mount
-
-common_preload /common_preload ext4 ro wait,logical,first_stage_mount
-/dev/block/by-name/special_preload /special_preload ext4 ro wait
+common_preload      /common_preload    ext4  ro        wait,logical,first_stage_mount
 
 
 /dev/block/platform/bootdevice/by-name/userdata    /data        ext4    noatime,nosuid,nodev,noauto_da_alloc,errors=panic    wait,check,formattable,quota,resize,reservedsize=128m,checkpoint=block,fileencryption=aes-256-xts
