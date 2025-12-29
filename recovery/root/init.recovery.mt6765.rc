@@ -1,5 +1,12 @@
+on init
+    mkdir /mnt/vendor/persist
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
+
+on post-fs
+    symlink /dev/block/platform/bootdevice /dev/block/bootdevice
+
 on fs
-    start prepdecrypt
+    install_keyring
 
 service keystore_auth /system/bin/keystore_auth
     oneshot
