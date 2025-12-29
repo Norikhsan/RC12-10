@@ -5,9 +5,6 @@ on init
 on post-fs
     symlink /dev/block/platform/bootdevice /dev/block/bootdevice
 
-on fs
-    install_keyring
-
 service keystore_auth /system/bin/keystore_auth
     oneshot
     user system
@@ -49,17 +46,12 @@ service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service
     disabled
     seclabel u:r:recovery:s0
 
-service prepdecrypt /system/bin/prepdecrypt.sh
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
-
 on property:crypto.ready=1 && property:ro.crypto.state=encrypted
-    mkdir /mnt/vendor/persist
-    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
     install_keyring
+
+on property:crypto.ready=1
+    start hal_cryptoeng_oppo
+    start keymaster-4-0
 
 on property:crypto.ready=1 && property:hwservicemanager.ready=true
     start hal_cryptoeng_oppo
@@ -84,3 +76,7 @@ on property:twrp.decrypt.done=true
     stop mobicore
     stop keymaster-4-0
     stop gatekeeper-1-0
+
+
+on boot
+    start health-hal-2-1
